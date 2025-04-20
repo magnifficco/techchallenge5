@@ -1,0 +1,42 @@
+#version: '3.8'
+
+services:
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+
+  video-uploader:
+    build: ./video-uploader
+    volumes:
+      - ./video-uploader/uploads:/app/uploads
+    env_file:
+      - .env
+    ports:
+      - "8002:8002"
+
+  video-processor:
+    build: ./video-processor
+    depends_on:
+      - video-uploader
+    volumes:
+      - ./video-uploader/uploads:/uploads
+      - ./video-processor/app/outputs:/outputs
+    env_file:
+      - .env
+
+  status-service:
+    build: ./status-service
+    ports:
+      - "8003:8003"
+    env_file:
+      - .env
+
+  notification-service:
+    build: ./notification-service
+    ports:
+      - "8004:8004"
+    env_file:
+      - .env

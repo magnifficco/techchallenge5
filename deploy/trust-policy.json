@@ -1,0 +1,17 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::973181171011:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/5995DCC2EE5E455E761C76EF44DEB7FB"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "oidc.eks.us-east-1.amazonaws.com/id/5995DCC2EE5E455E761C76EF44DEB7FB:sub": "system:serviceaccount:default:notification-service-sa"
+        }
+      }
+    }
+  ]
+}

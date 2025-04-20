@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification-service
+  template:
+    metadata:
+      labels:
+        app: notification-service
+    spec:
+      containers:
+        - name: notification-service
+          image: 973181171011.dkr.ecr.us-east-1.amazonaws.com/notification-service:latest
+          ports:
+            - containerPort: 8004
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          env:
+            - name: AWS_REGION
+              value: "us-east-1"
+            - name: SNS_TOPIC_ARN
+              value: "arn:aws:sns:us-east-1:973181171011:tech5-dev-video-topic"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-service
+spec:
+  selector:
+    app: notification-service
+  ports:
+    - protocol: TCP
+      port: 8004
+      targetPort: 8004
+  type: LoadBalancer

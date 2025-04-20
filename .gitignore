@@ -1,0 +1,61 @@
+# Diretórios comuns a ignorar
+**/node_modules/
+**/vendor/
+**/dist/
+**/build/
+**/out/
+**/.next/
+**/.nuxt/
+**/.cache/
+**/.venv/
+**/venv/
+**/env/
+**/target/
+**/bin/
+**/obj/
+**/__pycache__/
+**/.vscode/
+**/.idea/
+**/docs/
+**/coverage/
+**/test/
+**/tests/
+**/spec/
+**/examples/
+.terraform/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de log e temporários
+*.log
+*.tmp
+*.swp
+*.bak
+*.pid
+*.seed
+*.pid.lock
+*.pyc
+
+# Arquivos de configuração locais e sensíveis
+.env
+.env.*
+*.key
+*.pem
+*.cert
+*.crt
+
+# IDEs e ferramentas
+.vscode/
+.idea/
+
+# Docker
+.dockerignore
+
+# Python virtualenvs
+.venv/
+
+# Terraform state
+infra/terraform.tfstate*
+.terraform/

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-processor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: video-processor
+  template:
+    metadata:
+      labels:
+        app: video-processor
+    spec:
+      serviceAccountName: video-processor-sa
+      containers:
+        - name: video-processor
+          image: 973181171011.dkr.ecr.us-east-1.amazonaws.com/video-processor:latest
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          env:
+            - name: AWS_REGION
+              value: "us-east-1"
+            - name: SQS_QUEUE_URL
+              value: "https://sqs.us-east-1.amazonaws.com/973181171011/tech5-dev-video-queue"
+            - name: S3_BUCKET
+              value: "tech5-dev-videos"
+            - name: DYNAMODB_TABLE
+              value: "tech5-dev-video-status"
+            - name: SNS_TOPIC_ARN
+              value: "arn:aws:sns:us-east-1:973181171011:tech5-dev-video-topic"
+            - name: STATUS_SERVICE_URL
+              value: "http://status-service:8003"
+            - name: NOTIFICATION_SERVICE_URL
+              value: "http://notification-service:8004"
+            - name: PYTHONUNBUFFERED
+              value: "1"

@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: status-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: status-service
+  template:
+    metadata:
+      labels:
+        app: status-service
+    spec:
+      containers:
+        - name: status-service
+          image: 973181171011.dkr.ecr.us-east-1.amazonaws.com/status-service:latest
+          ports:
+            - containerPort: 8003
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          env:
+            - name: AWS_REGION
+              value: "us-east-1"
+            - name: DYNAMODB_TABLE
+              value: "tech5-dev-video-status"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: status-service
+spec:
+  selector:
+    app: status-service
+  ports:
+    - protocol: TCP
+      port: 8003
+      targetPort: 8003
+  type: LoadBalancer
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: status-service-sa
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::973181171011:role/tech5-status-role

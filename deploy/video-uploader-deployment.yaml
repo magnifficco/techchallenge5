@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-uploader
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: video-uploader
+  template:
+    metadata:
+      labels:
+        app: video-uploader
+    spec:
+      serviceAccountName: video-uploader-sa
+      containers:
+        - name: video-uploader
+          image: 973181171011.dkr.ecr.us-east-1.amazonaws.com/video-uploader:latest
+          ports:
+            - containerPort: 8002
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          env:
+            - name: AWS_REGION
+              value: "us-east-1"
+            - name: SQS_QUEUE_URL
+              value: "https://sqs.us-east-1.amazonaws.com/973181171011/tech5-dev-video-queue"
+            - name: S3_BUCKET
+              value: "tech5-dev-videos"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: video-uploader
+spec:
+  selector:
+    app: video-uploader
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8002
+  type: LoadBalancer
+
+---

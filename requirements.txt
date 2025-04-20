@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+psycopg2-binary
+aio_pika
+python-multipart
+python-dotenv
+opencv-python-headless
+sqlalchemy
+alembic
+aiosmtplib
+email-validator
+httpx
+python-jose[cryptography]
+boto3
